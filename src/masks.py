@@ -6,6 +6,7 @@
     else:
         return "Не верно введен номер карты"
 
+
 def get_mask_account(account: str) -> str:
     """Маскирует номер счета"""
     mask_account = str(account)
