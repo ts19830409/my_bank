@@ -85,6 +85,65 @@ sorted_desc = sort_by_date(operations)
 sorted_asc = sort_by_date(operations, reverse=False)
 # [{'id': 939719570, ...}, {'id': 41428829, ...}]
 ```
+### Модуль generators
+Содержит функции для работы с массивами транзакций:
+
+**filter_by_currency(transactions: List[Dict[str, Any]], currency_code: str) -> Iterator[Dict[str, Any]]:**
+
+Функция возвращает итератор, который поочередно выдает транзакции, где валюта операции соответствует заданной.
+```
+{
+          "id": 939719570,
+          "state": "EXECUTED",
+          "date": "2018-06-30T02:08:58.425572",
+          "operationAmount": {
+              "amount": "9824.07",
+              "currency": {
+                  "name": "USD",
+                  "code": "USD"
+              }
+          },
+          "description": "Перевод организации",
+          "from": "Счет 75106830613657916952",
+          "to": "Счет 11776614605963066702"
+      }
+      {
+              "id": 142264268,
+              "state": "EXECUTED",
+              "date": "2019-04-04T23:20:05.206878",
+              "operationAmount": {
+                  "amount": "79114.93",
+                  "currency": {
+                      "name": "USD",
+                      "code": "USD"
+                  }
+              },
+              "description": "Перевод со счета на счет",
+              "from": "Счет 19708645243227258542",
+              "to": "Счет 75651667383060284188"
+       }
+```
+
+**transaction_descriptions(transactions: List[Dict[str, Any]]) -> Iterator[str]:**
+
+Функция принимает список словарей с транзакциями и возвращает описание каждой операции по очереди
+```
+    Перевод организации
+    Перевод со счета на счет
+    Перевод со счета на счет
+    Перевод с карты на карту
+    Перевод организации
+```
+**card_number_generator(start: int, end: int) -> Iterator[str]:**
+
+Генератор генерирует номера карт в заданном диапазоне от 0000 0000 0000 0001 до 9999 9999 9999 9999.
+```
+    0000 0000 0000 0001
+    0000 0000 0000 0002
+    0000 0000 0000 0003
+    0000 0000 0000 0004
+    0000 0000 0000 0005
+```
 ## Пакет tests.
 
 ### Модуль test_masks
@@ -194,6 +253,98 @@ def test_empty_list():
 def test_missing_date_key(invalid_data):
     ...
 ```
+### Модуль test_generators
+Содержит тестовые функции для проверки корректности работы функции filter_by_currency, 
+transaction_descriptions и card_number_generator.
+
+Тестовые функции написаны с использованием параметризации:
+```
+def test_filter_by_currency_correct(sample_transactions):
+    ...
+
+
+def test_filter_by_currency_no_matches(sample_transactions):
+    ...
+
+
+def test_filter_by_currency_empty_list():
+   ...
+
+
+def test_transaction_descriptions_multiple():
+    ...
+
+
+def test_transaction_descriptions_single():
+    ...
+
+
+def test_transaction_descriptions_empty():
+    ...
+
+
+@pytest.mark.parametrize(
+    "start_num, end_num, expected",
+    [
+        (
+            1,
+            5,
+            [
+                "0000 0000 0000 0001",
+                "0000 0000 0000 0002",
+                "0000 0000 0000 0003",
+                "0000 0000 0000 0004",
+                "0000 0000 0000 0005",
+            ],
+        )
+    ],
+)
+def test_card_number_generator(start_num, end_num, expected):
+    ...
+
+
+@pytest.mark.parametrize(
+    "start_num, end_num, expected",
+    [
+        (
+            -5,
+            -3,
+            [
+                "0000 0000 0000 0005",
+                "0000 0000 0000 0004",
+                "0000 0000 0000 0003",
+            ],
+        )
+    ],
+)
+def test_card_number_generator_negative_values(start_num, end_num, expected):
+    ...
+
+
+@pytest.mark.parametrize("args", [(), (1,), (1, 2, 3)])
+def test_card_number_generator_wrong_arguments(args):
+    ...
+
+
+def test_card_formatting():
+    ...
+
+
+@pytest.mark.parametrize(
+    "start,end,expected_count",
+    [
+        (9999999999999990, 9999999999999999, 10),
+        (0, 9, 10),
+        (10000, 10000, 1),
+    ],
+)
+def test_card_boundary_values(start, end, expected_count):
+    ...
+
+
+def test_generator_completion():
+    ...
+```
 Фикстурыы описаны в пакете conftest:
 ```
 @pytest.fixture
@@ -212,6 +363,11 @@ def simple_data():
 
 @pytest.fixture
 def invalid_data():
+    ...
+
+
+@pytest.fixture
+def sample_transactions():
     ...
 ```
 
