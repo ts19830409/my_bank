@@ -35,17 +35,10 @@ def invalid_data():
         {"name": "B"},
     ]
 
-import pytest
 
 @pytest.fixture
 def sample_transactions():
     return [
-        {
-            "operationAmount": {"currency": {"code": "USD"}},
-            "description": "Перевод в долларах"
-        },
-        {
-            "operationAmount": {"currency": {"code": "EUR"}},
-            "description": "Перевод в евро"
-        }
+        {"operationAmount": {"currency": {"code": "USD"}}, "description": "Перевод в долларах"},
+        {"operationAmount": {"currency": {"code": "EUR"}}, "description": "Перевод в евро"},
     ]
