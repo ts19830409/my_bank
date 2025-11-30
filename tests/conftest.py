@@ -34,3 +34,18 @@ def invalid_data():
         {"date": "2023-01-01", "name": "A"},
         {"name": "B"},
     ]
+
+import pytest
+
+@pytest.fixture
+def sample_transactions():
+    return [
+        {
+            "operationAmount": {"currency": {"code": "USD"}},
+            "description": "Перевод в долларах"
+        },
+        {
+            "operationAmount": {"currency": {"code": "EUR"}},
+            "description": "Перевод в евро"
+        }
+    ]
