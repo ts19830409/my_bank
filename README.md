@@ -144,6 +144,17 @@ sorted_asc = sort_by_date(operations, reverse=False)
     0000 0000 0000 0004
     0000 0000 0000 0005
 ```
+### Модуль generators
+Создан декоратор log для автоматической регистрации выполнения функций.
+**def log(filename=None):**
+```
+def log(filename=None):
+    """Декоратор для автоматически логирования работы функции"""
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+        ...
+```
 ## Пакет tests.
 
 ### Модуль test_masks
@@ -369,6 +380,31 @@ def invalid_data():
 @pytest.fixture
 def sample_transactions():
     ...
+```
+### Модуль test_decorators
+Для тестирования была использована фикстура capsys
+```
+def test_log_console_success(capsys):
+    """Тест логирования УСПЕШНОГО выполнения функции в консоль"""
+    ...
+
+def test_log_console_error(capsys):
+    """Тест логирования ОШИБКИ выполнения функции в консоль"""
+
+    ...
+
+
+def test_log_file_success():
+    """Тест логирования УСПЕШНОГО выполнения функции в файл"""
+
+    ...
+
+
+def test_log_file_error():
+    """Тест логирования ОШИБКИ выполнения функции в файл"""
+
+    ...
+
 ```
 
 # Установка:
