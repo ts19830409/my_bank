@@ -1,4 +1,4 @@
-from typing import Iterator, Dict, Any, List
+from typing import Any, Dict, Iterator, List
 
 
 def filter_by_currency(transactions: List[Dict[str, Any]], currency_code: str) -> Iterator[Dict[str, Any]]:
@@ -21,6 +21,6 @@ def card_number_generator(start: int, end: int) -> Iterator[str]:
         quantity_of_characters = len(str(module_of_numbers))
         quantity_of_zeros = 16 - quantity_of_characters
         number_without_spaces = (quantity_of_zeros * "0") + str(module_of_numbers)
-        correct_format = [number_without_spaces[i : i + 4] for i in range(0, len(number_without_spaces), 4)]
+        correct_format = [number_without_spaces[i:i+4] for i in range(0, len(number_without_spaces), 4)]
         new_correct_format = " ".join(correct_format)
         yield new_correct_format
