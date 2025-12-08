@@ -12,10 +12,11 @@ def test_log_console_success(capsys):
         return a + b
 
     result = add(2, 3)
-    captured = capsys.readouterr()
+    captured = capsys.readouterr().out
 
     assert result == 5
-    assert "add ok" in captured.out
+    assert "add started" in captured
+    assert "add finished with result: 5" in captured
 
 
 def test_log_console_error(capsys):
@@ -29,9 +30,12 @@ def test_log_console_error(capsys):
         error_func()
     except ValueError:
         pass
-    captured = capsys.readouterr()
-    assert "error_func error: ValueError" in captured.out
-    assert "Inputs: (), {}" in captured.out
+
+    captured = capsys.readouterr().out
+
+    assert "error_func started" in captured
+    assert "error_func error: ValueError" in captured
+    assert "Inputs: (), {}" in captured
 
 
 def test_log_file_success():
@@ -52,7 +56,8 @@ def test_log_file_success():
             content = f.read()
 
         assert result == 12
-        assert "multiply ok" in content
+        assert "multiply started" in content
+        assert "multiply finished with result: 12" in content
 
     finally:
         os.unlink(tmp_filename)
@@ -66,7 +71,7 @@ def test_log_file_error():
 
     try:
 
-        @log(filename=tmp_filename)  # ← в файл!
+        @log(filename=tmp_filename)
         def failing():
             raise TypeError("file test error")
 
@@ -78,6 +83,7 @@ def test_log_file_error():
         with open(tmp_filename, "r") as f:
             content = f.read()
 
+        assert "failing started" in content
         assert "failing error: TypeError" in content
         assert "Inputs: (), {}" in content
 
