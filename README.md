@@ -155,6 +155,28 @@ def log(filename=None):
         def wrapper(*args, **kwargs):
         ...
 ```
+### Модуль utils
+Содержит функцию принимающая на вход JSON-файл и возвращающая список словарей
+с данными о финансовых транзакциях
+**def load_json_file**
+```
+	...
+		with open(file_path, "r", encoding="utf-8") as f:
+			parsed_data = json.load(f)
+			if not isinstance(parsed_data, list):
+				return[]
+	...			
+```
+### Модуль external_api
+Содержит функция, принимающая на вход транзакцию и возвращающая сумму транзакции
+**def convert_to_rub**
+```
+    ...
+        amount_user = transaction["operationAmount"]["amount"]
+	    currency_user = transaction["operationAmount"]["currency"]["code"]
+	    amount_user_convert = float(amount_user)
+    ...	
+```
 ## Пакет tests.
 
 ### Модуль test_masks
@@ -406,6 +428,41 @@ def test_log_file_error():
     ...
 
 ```
+### Модуль test_utils
+Содержит тестовые функции для проверки корректности работы функции load_json_file
+```
+def test_load_good_json():
+    ...
+    
+def test_load_missing_file()
+    ...
+
+def test_load_invalid_json()
+    ...
+    
+def test_load_json_not_list():
+    ...
+
+def test_load_json_empty_list():
+    ...        
+```
+### Модуль test_external_api
+Содержит тестовые функции для проверки корректности работы функции convert_to_rub 
+с использованием Mock и patch
+```
+def test_rub_transaction():
+    ...
+
+def test_usd_transaction_with_mock():
+    ...
+
+def test_api_error():
+    ...
+
+def test_no_api_key():
+    ...
+```
+# Собран шаблон файла .env
 
 # Установка:
 **Клонируйте репозиторий:**
