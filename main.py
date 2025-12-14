@@ -1,36 +1,19 @@
-﻿# from src.masks import get_mask_card_number, get_mask_account
-from src.widget import get_date, mask_account_card
+﻿from src.masks import get_mask_card_number, get_mask_account
+from src.utils import load_json_file
+import json
 
+# Тестируем masks
+print("Тестируем masks.py:")
+print(get_mask_card_number("1234567812345678"))
+print(get_mask_account("12345678901234567890"))
 
-def main() -> None:
-    print("=== Тестирование маскировки банковских данных ===")
+# Тестируем utils
+print("\nТестируем utils.py:")
+test_data = [{"id": 1, "amount": 100}, {"id": 2, "amount": 200}]
+with open("test.json", "w") as f:
+    json.dump(test_data, f)
 
-    tests = [
-        "Maestro 1596837868705199",
-        "Счет 64686473678894779589",
-        "MasterCard 7158300734726758",
-        "Счет 35383033474447895560",
-        "Visa Classic 6831982476737658",
-        "Visa Platinum 8990922113665229",
-        "Visa Gold 5999414228426353",
-        "Счет 73654108430135874305",
-    ]
+data = load_json_file("test.json")
+print(f"Загружено записей: {len(data)}")
 
-    for test in tests:
-        result = mask_account_card(test)
-        print(f"Ввод: {test}")
-        print(f"Вывод: {result}")
-        print()
-
-    print("=== Тестирование форматирования даты ===")
-    test_data = "2024-03-11T02:26:18.671407"
-    result_data = get_date(test_data)
-    print(f"Ввод:  {test_data}")
-    print(f"Вывод: {result_data}")
-
-
-if __name__ == "__main__":
-    main()
-
-    # print(get_mask_card_number("1234567890123456"))
-    # print(get_mask_account("12345678901234567890"))
+print("\nЛоги созданы в папке logs/")
