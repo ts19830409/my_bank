@@ -4,7 +4,6 @@ from src.log_helper import create_file_handler
 
 logger = logging.getLogger("masks")
 logger.setLevel(logging.DEBUG)
-# file_handler = logging.getLogger("masks")
 file_handler = create_file_handler("masks.log")
 file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(file_formatter)
