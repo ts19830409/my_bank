@@ -1,4 +1,4 @@
-﻿# Виджет операций для личного кабинета банка
+﻿﻿# Виджет операций для личного кабинета банка
 
 ## Описание
 Виджет для отображения последних успешных банковских операций клиента в личном кабинете банка. 
@@ -176,6 +176,27 @@ def log(filename=None):
 	    currency_user = transaction["operationAmount"]["currency"]["code"]
 	    amount_user_convert = float(amount_user)
     ...	
+```
+### Модуль processing
+Содержит функции принимающие на вход csv-файл и xlsx-файл и возвращающие список словарей
+с данными о финансовых транзакциях
+**def load_csv_file**
+```
+	...
+        with open(file_path, "r", encoding="utf-8") as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=";")
+            for row in reader:
+               transactions.append(row)
+            return transactions	
+    ...			
+```
+**def load_xlsx_filee**
+```
+	...
+		df = pd.read_excel(file_path)
+        result = df.to_dict("records")
+        return result
+    ...
 ```
 ## Пакет tests.
 
@@ -462,6 +483,47 @@ def test_api_error():
 def test_no_api_key():
     ...
 ```
+### Модуль test_transactions
+Содержит тестовые функции для проверки корректности работы функции load_csv_file и load_xlsx_file 
+с использованием Mock и patch
+```
+def test_csv_normal:
+    ...
+
+def test_csv_no_file():
+    ...
+
+def test_csv_empty():
+    ...
+
+def test_csv_general_exception():
+    ...
+
+def test_csv_minimal_error_test():
+    ...
+
+def test_csv_empty_after_exists_check():
+    ...
+    
+def test_excel_normal():
+    ...
+
+def test_excel_error():
+    ...       
+    
+def test_excel_no_file():
+    ...       
+    
+def test_excel_general_exception():
+    ...
+
+def test_excel_empty_file():
+    ...
+    
+def test_excel_file_exists_but_empty():
+    ...                   
+```
+
 # Собран шаблон файла .env
 
 # Установка:

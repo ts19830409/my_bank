@@ -1,5 +1,6 @@
 import os
 import tempfile
+from unittest.mock import patch
 
 from src.utils import load_json_file
 
@@ -58,3 +59,18 @@ def test_load_json_empty_list():
         assert result == []
     finally:
         os.unlink(file_path)
+
+
+def test_load_json_empty_file_logs_error():
+    """Проверяем, что при пустом файле логируется ошибка"""
+    with patch("os.path.exists", return_value=True):
+        with patch("os.path.getsize", return_value=0):  # ← файл пустой!
+            with patch("logging.Logger.error") as mock_log:
+                result = load_json_file("empty.json")
+
+                assert result == []
+                # Проверяем, что логгер вызвался с сообщением "пустой"
+                mock_log.assert_called_once()
+                # В аргументах вызова ищем слово "пустой"
+                call_args = mock_log.call_args[0][0]
+                assert "пустой" in call_args
