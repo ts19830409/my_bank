@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "state": "EXECUTED",
+    "date": "2024-01-01",
+    "amount": 100
+  },
+  {
+    "id": 2,
+    "state": "CANCELED",
+    "date": "2024-01-02",
+    "amount": 200
+  }
+]
