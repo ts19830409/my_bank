@@ -198,6 +198,31 @@ def log(filename=None):
         return result
     ...
 ```
+## Модуль search
+Содержит функцию для поиска в списке словарей операций по заданной строке и 
+функцию для подсчета количества банковских операций определенного типа
+**def process_bank_search**
+```
+	result_search = []
+	if search == "":
+		return data
+	else:
+		pattern = re.compile(search, re.I)
+		for transaction in data:
+			description = transaction.get("description", "")
+			if pattern.search(description):
+				result_search.append(transaction)
+	return result_search
+```
+**process_bank_operations**
+```counter = Counter()
+	for transaction in data:
+		description = transaction.get("description", "")
+		for category in categories:
+			if re.search(category, description, re.I):
+				counter[category] += 1
+	return counter
+```
 ## Пакет tests.
 
 ### Модуль test_masks
@@ -523,8 +548,72 @@ def test_excel_empty_file():
 def test_excel_file_exists_but_empty():
     ...                   
 ```
+### Модуль test_search
+Содержит тестовые функции для проверки корректности работы функции process_bank_search и
+process_bank_operations 
+```
+def test_process_bank_search_empty_data():
+    ...
 
+def test_process_bank_search_found():
+    ...
+
+def test_process_bank_search_not_found():
+    ...
+
+def test_process_bank_search_empty_search():
+    ...
+
+def test_process_bank_search_case_insensitive():
+    ...
+
+def test_process_bank_search_with_regex():
+    ...
+    
+def test_process_bank_search_multiple_matches():
+    ...
+
+def test_process_bank_search_partial_match():
+    ...       
+    
+def test_process_bank_operations_basic():
+    ...       
+    
+def test_process_bank_operations_empty_data():
+    ...
+
+def test_process_bank_operations_no_matches():
+    ...
+    
+def test_process_bank_operations_multiple_categories():
+    ...                   
+
+def test_process_bank_operations_case_insensitive():
+    ...                   
+    
+def test_process_bank_operations_all_categories_zero():
+    ...                   
+
+def test_process_bank_search_missing_description():
+    ...                   
+   
+def test_process_bank_operations_empty_categories():
+    ...
+
+def test_process_bank_search_special_characters():
+    ...                   
+
+def test_process_bank_search_performance():
+    ...                   
+
+def test_process_bank_operations_performance():
+    ...
+```
 # Собран шаблон файла .env
+
+# Модуле Main
+Реализована функция отвечающая за основную логику проекта и связывающая
+функциональности между собой
 
 # Установка:
 **Клонируйте репозиторий:**
